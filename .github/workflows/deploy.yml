@@ -37,7 +37,7 @@ jobs:
         export KUBECONFIG=$PWD/kubeconfig
 
     - name: Deploy to test namespace
-      run: kubectl apply -f deployment-test.yaml
+      run: kubectl apply -f ./kubernetes/Kubernetes_conf/deployment-test.yaml
 
     - name: Wait for pods
       run: kubectl rollout status deployment nginx-app -n testing
@@ -57,7 +57,7 @@ jobs:
     - name: Wait and test with curl
       run: |
         sleep 30
-        curl --retry 5 --retry-delay 5 http://$SERVICE_IP | grep "Hello"
+        curl --retry 5 --retry-delay 5 http://$SERVICE_IP | grep "Bienvenue"
 
   deploy-to-prod:
     runs-on: ubuntu-latest
@@ -70,4 +70,4 @@ jobs:
         export KUBECONFIG=$PWD/kubeconfig
 
     - name: Deploy to production
-      run: kubectl apply -f deployment.yaml
+      run: kubectl apply -f ./Kubernetes_conf/deployment.yaml

@@ -37,7 +37,7 @@ jobs:
         export KUBECONFIG=$PWD/kubeconfig
 
     - name: Deploy to test namespace
-      run: kubectl apply -f ./Kubernetes_conf/deployment-test.yaml
+      run: kubectl apply -f ./Kubernetes/deployment-test.yaml
 
     - name: Wait for pods
       run: kubectl rollout status deployment nginx-app -n testing
@@ -70,4 +70,4 @@ jobs:
         export KUBECONFIG=$PWD/kubeconfig
 
     - name: Deploy to production
-      run: kubectl apply -f ./Kubernetes_conf/deployment.yaml
+      run: kubectl apply -f ./Kubernetes/deployment.yaml

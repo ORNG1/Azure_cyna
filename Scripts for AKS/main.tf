@@ -17,7 +17,7 @@ resource "azurerm_subnet" "saas-aks_subnet" {
   name                 = "saas-aks-subnet"
   resource_group_name  = azurerm_resource_group.cyna_rg.name
   virtual_network_name = azurerm_virtual_network.cyna_vnet.name
-  address_prefixes     = ["172.16.20.0/25"]
+  address_prefixes     = ["172.16.5.0/25"]
 }
 
 # Sous-réseau Application Gateway (public)
@@ -25,7 +25,7 @@ resource "azurerm_subnet" "appgw_subnet" {
   name                 = "appgw-subnet"
   resource_group_name  = azurerm_resource_group.cyna_rg.name
   virtual_network_name = azurerm_virtual_network.cyna_vnet.name
-  address_prefixes     = ["172.16.20.128/25"]
+  address_prefixes     = ["172.16.5.128/25"]
 }
 
 # Sous-réseau Admin (privé)
@@ -33,7 +33,7 @@ resource "azurerm_subnet" "admin_subnet" {
   name                 = "appgw-subnet"
   resource_group_name  = azurerm_resource_group.cyna_rg.name
   virtual_network_name = azurerm_virtual_network.cyna_vnet.name
-  address_prefixes     = ["172.16.23.0/24"]
+  address_prefixes     = ["172.16.20.0/24"]
 }
 
 # NSG pour subnet AKS

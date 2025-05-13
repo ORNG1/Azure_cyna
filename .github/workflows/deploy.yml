@@ -1,4 +1,4 @@
-name: CI/CD AKS
+name: Pipeline CI/CD AKS
 
 on:
   push:
@@ -12,9 +12,6 @@ env:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./Azure_cyna
 
     steps:
     - name: Checkout repo
@@ -32,9 +29,6 @@ jobs:
   deploy-to-test:
     runs-on: ubuntu-latest
     needs: build-and-push
-    defaults:
-      run:
-        working-directory: ./Azure_cyna
 
     steps:
     - name: Set up Kubeconfig
@@ -43,7 +37,7 @@ jobs:
         export KUBECONFIG=$PWD/kubeconfig
 
     - name: Deploy to test namespace
-      run: kubectl apply -f Kubernetes_conf/deployment-test.yaml
+      run: kubectl apply -f ./Kubernetes_conf/deployment-test.yaml
 
     - name: Wait for pods
       run: kubectl rollout status deployment nginx-app -n testing
@@ -51,12 +45,9 @@ jobs:
   test-application:
     runs-on: ubuntu-latest
     needs: deploy-to-test
-    defaults:
-      run:
-        working-directory: ./Azure_cyna
 
     steps:
-    - name: Set up Kubeconfig and get service IP
+    - name: Get test service IP
       run: |
         echo "${{ secrets.KUBECONFIG_TEST }}" | base64 -d > kubeconfig
         export KUBECONFIG=$PWD/kubeconfig
@@ -71,9 +62,6 @@ jobs:
   deploy-to-prod:
     runs-on: ubuntu-latest
     needs: test-application
-    defaults:
-      run:
-        working-directory: ./Azure_cyna
 
     steps:
     - name: Set up Kubeconfig
@@ -82,4 +70,4 @@ jobs:
         export KUBECONFIG=$PWD/kubeconfig
 
     - name: Deploy to production
-      run: kubectl apply -f Kubernetes_conf/deployment.yaml
+      run: kubectl apply -f ./Kubernetes_conf/deployment.yaml

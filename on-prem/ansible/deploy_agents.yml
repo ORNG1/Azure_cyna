@@ -1,0 +1,32 @@
+---
+- name: Configuration des serveurs On-Premise (Zabbix, Wazuh, MAJ)
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Mettre à jour tous les paquets
+      apt:
+        update_cache: yes
+        upgrade: dist
+
+    - name: Installer l’agent Zabbix
+      apt:
+        name: zabbix-agent
+        state: present
+
+    - name: Activer le service Zabbix agent
+      service:
+        name: zabbix-agent
+        state: started
+        enabled: true
+
+    - name: Installer l’agent Wazuh
+      apt:
+        deb: https://packages.wazuh.com/4.x/apt/pool/main/w/wazuh-agent/wazuh-agent_4.7.3-1_amd64.deb
+        state: present
+
+    - name: Activer le service Wazuh
+      service:
+        name: wazuh-agent
+        state: started
+        enabled: true
